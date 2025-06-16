@@ -1,25 +1,248 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <title>Divyanshu | Portfolio</title>
-  <link rel="stylesheet" href="style.css" />
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Black Dronnzzer</title>
+  <link rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"/>
+  <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Orbitron:wght@500&family=Georgia:ital@0;1&display=swap"
+        rel="stylesheet"/>
+  <style>
+    /* RESET & BASE */
+    * { margin:0; padding:0; box-sizing:border-box; }
+    html, body {
+      height:100%; background:#000;
+      font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      overflow-x:hidden;
+    }
+
+    /* HERO + WAVE */
+    .hero { position:relative; height:100vh; background:#000; overflow:hidden; }
+    #waveCanvas { position:absolute; top:0; left:0; width:100%; height:100%; z-index:1; }
+    .social-icons {
+      position:absolute; top:20px; right:20px; display:flex; gap:15px; z-index:5;
+    }
+    .social-icons a { color:#fff; font-size:22px; transition:color .3s; }
+    .social-icons a:hover { color:#f3cfc6; }
+    .branding {
+      position:absolute; top:30px; left:40px; color:#fff; z-index:5; max-width:500px;
+    }
+    .branding h1 {
+      font-family:'Orbitron',sans-serif; font-size:38px; margin-bottom:10px;
+    }
+    .branding p {
+      font-style:italic; font-size:18px; line-height:1.5;
+    }
+
+    /* ABOUT ME SECTION */
+    .about {
+      background: linear-gradient(90deg, #4B001F 0%, #ffffff 100%);
+      padding:80px 40px;
+    }
+    .about-content {
+      max-width:1200px; margin:0 auto;
+      display:flex; align-items:center; gap:40px;
+    }
+    .about-visual {
+      position:relative; width:280px; height:280px;
+    }
+    .about-visual .blob {
+      position:absolute; width:100%; height:100%; background:#222;
+      border-radius:45% 55% 60% 40% / 50% 40% 60% 50%;
+      top:0; left:0; transform:translate(20px,20px) rotate(-10deg);
+      z-index:0;
+    }
+    .about-visual .oval {
+      position:absolute; width:100%; height:100%; border-radius:50%;
+      overflow:hidden; border:4px solid #fff; z-index:1;
+    }
+    .about-visual .oval .inner-bg {
+      position:absolute; width:120%; height:120%; top:-10%; left:-10%;
+      background: linear-gradient(135deg, #ff9a9e 0%, #fecfef 100%);
+      z-index:1;
+    }
+    .about-visual .oval img {
+      position:relative; width:100%; height:100%; object-fit:cover; z-index:2;
+    }
+    .about-text {
+      flex:1; text-align:center;
+    }
+    .about-title {
+      width:100%; height:120px; margin-bottom:20px;
+    }
+    .about-title text {
+      fill:#000; font-family:'Great Vibes', cursive; font-size:48px;
+    }
+    .about-text p.description {
+      font-family:'Georgia', serif;
+      font-size:1.1rem; font-style:italic;
+      color:maroon; line-height:1.6;
+      margin:0 auto 30px; max-width:600px;
+    }
+    .line-with-icon {
+      display:flex; align-items:center; justify-content:center;
+      gap:10px; margin-top:20px;
+    }
+    .line-with-icon .line {
+      flex:1; height:1px; background:rgba(0,0,0,0.2);
+    }
+    .line-with-icon .icon {
+      font-size:1.8rem; color:#3498db;
+    }
+
+    /* CARDS SECTION */
+    .section {
+      padding:80px 40px;
+      background: linear-gradient(135deg, #0d0d0d, #330000);
+      display:flex; flex-wrap:wrap; justify-content:center; gap:30px;
+    }
+    .card {
+      background:rgba(255,255,255,0.05); backdrop-filter:blur(10px);
+      border-radius:20px; box-shadow:0 0 20px rgba(255,0,0,0.3);
+      width:280px; height:270px; padding:20px;
+      display:flex; flex-direction:column; justify-content:flex-start;
+      border:1px solid rgba(255,255,255,0.1);
+      transition:transform .3s, box-shadow .3s;
+    }
+    .card:hover {
+      transform:translateY(-10px); box-shadow:0 0 30px rgba(255,20,20,0.6);
+    }
+    .card i { font-size:36px; margin-bottom:12px; color:#ff4d4d; }
+    .card h3 { font-size:22px; margin-bottom:8px; color:#fff; }
+    .card p { flex-grow:1; font-size:14px; color:#ccc; }
+    .card a {
+      margin-top:auto; text-decoration:none; color:#ff4d4d; font-weight:bold;
+    }
+    .card a:hover { color:#fff; text-decoration:underline; }
+
+    /* DevJunkie specific */
+    .card.devjunkie {
+      background:rgba(255,255,255,0.08);
+    }
+    .card.devjunkie h3 {
+      font-size:24px; margin-bottom:8px;
+    }
+    .card.devjunkie .subdesc {
+      font-size:14px; color:#ccc; line-height:1.4; margin-bottom:16px;
+    }
+  </style>
 </head>
 <body>
-  <header>
-    <h1>Hello, I’m Divyanshu 👋</h1>
-    <p>QA Engineer | Designer | Gita Philosopher</p>
-  </header>
 
-  <section>
-    <h2>About Me</h2>
-    <p>I work in automation, design spiritual content, and love the Bhagavad Gita.</p>
+  <!-- Hero + Wave -->
+  <div class="hero">
+    <canvas id="waveCanvas"></canvas>
+    <div class="social-icons">
+      <a href="#"><i class="fab fa-linkedin"></i></a>
+      <a href="#"><i class="fab fa-instagram"></i></a>
+      <a href="#"><i class="fab fa-facebook"></i></a>
+      <a href="#"><i class="fas fa-envelope"></i></a>
+      <a href="#"><i class="fab fa-github"></i></a>
+    </div>
+    <div class="branding">
+      <h1>DIVYANSHU PRIYADARSHI</h1>
+      <p>
+        "Build an empire, but never forget your roots. Chase goals, but cherish those who cheer for you.
+        Earn wealth, but invest in time with your people. In the end, success means nothing if love isn’t part of it."
+      </p>
+    </div>
+  </div>
+
+  <!-- About Me -->
+  <section class="about">
+    <div class="about-content">
+      <div class="about-visual">
+        <div class="blob"></div>
+        <div class="oval">
+          <div class="inner-bg"></div>
+          <img
+            src="https://images.unsplash.com/photo-1466112928291-0903b80a9466?q=80&w=3273&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
+            alt="About Me Photo"
+          />
+        </div>
+      </div>
+      <div class="about-text">
+        <svg class="about-title" viewBox="0 0 600 120" xmlns="http://www.w3.org/2000/svg">
+          <defs>
+            <path id="curve" d="M50,80 C150,0 450,0 550,80"/>
+          </defs>
+          <text>
+            <textPath href="#curve" startOffset="50%" text-anchor="middle">
+              About Me
+            </textPath>
+          </text>
+        </svg>
+        <p class="description">
+          I’m an entrepreneur of ideas and a techie by passion.
+A solo traveler, street food hacker, and self-taught cook.
+Photography is how I pause time, philosophy is how I understand it.
+I lift at the gym, but stay lighter in spirit — calmer than the sun.
+More precious than the moon, I chase meaning, not noise.
+In a world rushing forward, I choose stillness and truth.
+        </p>
+        <div class="line-with-icon">
+          <span class="line"></span>
+          <span class="icon">👏</span>
+          <span class="line"></span>
+        </div>
+      </div>
+    </div>
   </section>
 
-  <footer>
-    <p>📩 Contact: your.email@gmail.com</p>
-  </footer>
+  <!-- Cards -->
+  <div class="section">
+    <div class="card devjunkie">
+      <i class="fas fa-vial"></i>
+      <h3>DevJunkie</h3>
+      <p class="subdesc">
+        Hooked on bugs, high on tools — I break things to make them better
+      </p>
+      <a href="devjunkie.html">Know more</a>
+    </div>
+    <div class="card"><i class="fas fa-briefcase"></i><h3>Entrepreneur</h3><p>Start small, think big, move fast. Dreams demand hustle.</p><a href="#">Know more</a></div>
+    <div class="card"><i class="fas fa-camera"></i><h3>Photography</h3><p>Freeze time, capture souls. Every frame is a story.</p><a href="#">Know more</a></div>
+    <div class="card"><i class="fas fa-utensils"></i><h3>Cooking</h3><p>Mixing flavors, crafting moments. Cooking is silent poetry.</p><a href="#">Know more</a></div>
+    <div class="card"><i class="fas fa-dumbbell"></i><h3>Fitness</h3><p>Discipline builds strength. Beast mode: always ON.</p><a href="#">Know more</a></div>
+    <div class="card"><i class="fas fa-hiking"></i><h3>Solo Traveler</h3><p>Wander alone, discover yourself. The road is the teacher.</p><a href="#">Know more</a></div>
+    <div class="card"><i class="fas fa-brain"></i><h3>Philosopher</h3><p>Contemplate the unseen. Silence is often the deepest speech.</p><a href="#">Know more</a></div>
+    <div class="card"><i class="fas fa-gamepad"></i><h3>Gamer</h3><p>Strategy, speed, and skill. Reality bends in pixels.</p><a href="#">Know more</a></div>
+  </div>
 
-  <script src="script.js"></script>
+  <script>
+    // Canvas Wave Animation
+    const canvas = document.getElementById('waveCanvas');
+    const ctx    = canvas.getContext('2d');
+    let cw, ch, gradient;
+    function resize() {
+      cw = canvas.width  = canvas.clientWidth;
+      ch = canvas.height = canvas.clientHeight;
+      gradient = ctx.createLinearGradient(0,0,cw,0);
+      gradient.addColorStop(0,'#47cacc');
+      gradient.addColorStop(0.25,'#3aa0ff');
+      gradient.addColorStop(0.5,'#6a11cb');
+      gradient.addColorStop(0.75,'#d200ff');
+      gradient.addColorStop(1,'#00ff9d');
+    }
+    window.addEventListener('resize', resize);
+    resize();
+    function draw() {
+      const now = performance.now()*0.001;
+      ctx.clearRect(0,0,cw,ch);
+      ctx.globalAlpha=1; ctx.fillStyle=gradient;
+      const pts=120, rows=20, sheetH=ch*0.4, startY=(ch-sheetH)/2, freq=0.02, amp=sheetH*0.2;
+      const waveTime = now*0.2;
+      for(let j=0;j<rows;j++){
+        const baseY = startY + (j/(rows-1))*sheetH;
+        for(let i=0;i<=pts;i++){
+          const x = (i/pts)*cw;
+          const y = baseY + Math.sin(x*freq + waveTime + j*0.3)*amp;
+          ctx.beginPath(); ctx.arc(x,y,2,0,Math.PI*2); ctx.fill();
+        }
+      }
+      requestAnimationFrame(draw);
+    }
+    draw();
+  </script>
 </body>
 </html>
