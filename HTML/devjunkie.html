@@ -4,10 +4,8 @@
   <meta charset="UTF-8"/>
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>DevJunkie Carousel</title>
-  <!-- Google Fonts -->
   <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500&family=Great+Vibes&display=swap" rel="stylesheet"/>
   <style>
-    /* RESET & BASE */
     * { margin: 0; padding: 0; box-sizing: border-box; }
     html, body {
       height: 100%;
@@ -15,9 +13,8 @@
       background: linear-gradient(135deg, #2f2f2f 0%, #1b1b1b 100%);
       position: relative;
       overflow: hidden;
-      color: #ddd;
+      color: #222;
     }
-    /* Glossy sheen on background */
     body::before {
       content: '';
       position: absolute;
@@ -26,7 +23,6 @@
       background: rgba(255,255,255,0.08);
       pointer-events: none;
     }
-    /* HEADER */
     header {
       width: 100%; position: fixed; top: 0; left: 0; z-index: 10;
       padding: 20px 40px;
@@ -42,12 +38,10 @@
     }
     header nav a {
       font-size: 0.9rem;
-      color: #ccc;
+      color: #444;
       text-decoration: none;
     }
     header nav a:hover { text-decoration: underline; }
-
-    /* SLIDER PERSPECTIVE */
     .slider-container {
       position: absolute; top: 80px; bottom: 40px; left: 8px; right: 8px;
       display: flex; align-items: center; justify-content: center;
@@ -55,56 +49,102 @@
     }
     .slider { width: 100%; overflow: hidden; }
     .slider-track {
-      display: flex; transition: transform 0.6s ease;
+      display: flex; transition: transform 0.6s cubic-bezier(.86,.01,.37,.99);
       transform-style: preserve-3d;
     }
-    /* SLIDE PANEL */
     .slide {
       flex: 0 0 calc((100% - 40px)/3);
       margin-right: 20px;
       height: 70vh;
-      background: #000;
       border-radius: 16px;
-      box-shadow: 0 10px 30px rgba(0,0,0,0.7);
+      box-shadow: 0 10px 30px rgba(0,0,0,0.09);
       display: flex;
       flex-direction: column;
       justify-content: center;
       padding: 24px;
       transform-origin: center;
+      position: relative;
+      background: #fff;
+      border: 1.5px solid rgba(180,180,180,0.06);
+      overflow: hidden;
     }
     .slide:last-of-type { margin-right: 0; }
     .slide h4 {
       font-size: 1.4rem;
       margin-bottom: 12px;
       text-align: center;
-      color: #fff;
+      color: #222;
       font-weight: bold;
+      text-shadow: 0 2px 10px rgba(255,255,255,0.22);
     }
     .slide p {
       font-size: 1rem;
       line-height: 1.5;
       text-align: center;
-      color: #ccc;
+      color: #333;
       margin-bottom: 16px;
+      text-shadow: 0 1.5px 6px rgba(255,255,255,0.18);
     }
     .slide .byline {
       font-family: 'Great Vibes', cursive;
       font-size: 1.1rem;
       text-align: center;
-      color: #aaa;
+      color: #444;
       margin-top: auto;
+      text-shadow: 0 1px 7px #fff3;
     }
-    /* DOTS */
+
+    /* Gradients for all 8 slides (YOUR LATEST REQUEST) */
+    #learning-journey-slide {
+      background-image: linear-gradient(to top, #a18cd1 0%, #fbc2eb 100%);
+    }
+    #automation-testing-slide {
+      background-image: linear-gradient(to top, #fad0c4 0%, #ffd1ff 100%);
+    }
+    #developer-journey-slide {
+      background-image: linear-gradient(to top, #ff9a9e 0%, #fecfef 99%, #fecfef 100%);
+    }
+    #designer-journey-slide {
+      background-image: linear-gradient(to top, #fdcbf1 0%, #fdcbf1 1%, #e6dee9 100%);
+    }
+    #seo-expert-slide {
+      background-image: linear-gradient(120deg, #fccb90 0%, #d57eeb 100%);
+    }
+    #market-strategy-slide {
+      background-image: linear-gradient(to top, #cd9cf2 0%, #f6f3ff 100%);
+    }
+    #sales-journey-slide {
+      background-image: linear-gradient(to top, #feada6 0%, #f5efef 100%);
+    }
+    #cybersecurity-journey-slide {
+      background-image: linear-gradient(to top, #ff0844 0%, #ffb199 100%);
+    }
+
+    /* Optional glass highlight for first slide */
+    #learning-journey-slide::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(to bottom, rgba(255,255,255,0.08), rgba(255,255,255,0.06));
+      border-radius: 16px;
+      pointer-events: none;
+    }
+
     .dots {
       position: absolute; bottom: 12px; left: 50%; transform: translateX(-50%);
       display: flex; gap: 8px; z-index: 10;
     }
     .dot {
       width: 12px; height: 12px;
-      background: rgba(255,255,255,0.3);
+      background: rgba(70,70,70,0.18);
       border-radius: 50%; cursor: pointer;
+      border: 1.2px solid rgba(255,255,255,0.5);
+      transition: background 0.2s;
     }
-    .dot.active { background: #00ddb3; }
+    .dot.active { background: #8e54e9; border-color: #fff;}
   </style>
 </head>
 <body>
@@ -112,12 +152,10 @@
     <h1>DevJunkie</h1>
     <nav><a href="index.html">← Home</a></nav>
   </header>
-
   <div class="slider-container">
     <div class="slider">
       <div class="slider-track" id="track">
-        <!-- Slide 1 -->
-        <div class="slide">
+        <div class="slide" id="learning-journey-slide">
           <h4>🚀 Learning Journey</h4>
           <p>Path of Lifelong Learning / Growth-Driven Mindset / Evolution in Progress</p>
           <p>I never learned to impress — I learned to evolve.<br>
@@ -132,8 +170,7 @@
              Because greatness isn’t a destination — it’s a mindset.</p>
           <p class="byline">– by Divyanshu Priyadarshi</p>
         </div>
-        <!-- Slide 2 -->
-        <div class="slide">
+        <div class="slide" id="automation-testing-slide">
           <h4>🤖 Automation Testing Journey</h4>
           <p>Test Automation Trail / The Automation Architect’s Path / My Road to Seamless QA</p>
           <p>I break things for a living — so they never break for you.<br>
@@ -148,8 +185,7 @@
              That tester is me.</p>
           <p class="byline">– by Divyanshu Priyadarshi</p>
         </div>
-        <!-- Slide 3 -->
-        <div class="slide">
+        <div class="slide" id="developer-journey-slide">
           <h4>💻 Developer Journey</h4>
           <p>From Logic to Launch / The Code Odyssey / Crafting Software, Shaping Solutions</p>
           <p>My world is built in logic, but driven by imagination.<br>
@@ -163,9 +199,7 @@
              This isn’t just work. It’s my way of life.</p>
           <p class="byline">– by Divyanshu Priyadarshi</p>
         </div>
-        <!-- Continue similarly for the remaining slides -->
-        <!-- Slide 4: Designer Journey -->
-        <div class="slide">
+        <div class="slide" id="designer-journey-slide">
           <h4>🎨 Designer Journey</h4>
           <p>Pixels with Purpose / Designing Beyond Aesthetics / The Visual Strategy Path</p>
           <p>Design was never just about beauty — it was about purpose.<br>
@@ -179,8 +213,7 @@
              This is more than visuals. This is visual philosophy.</p>
           <p class="byline">– by Divyanshu Priyadarshi</p>
         </div>
-        <!-- Slide 5: SEO Expert Journey -->
-        <div class="slide">
+        <div class="slide" id="seo-expert-slide">
           <h4>📈 SEO Expert Journey</h4>
           <p>Climbing the Search Ladder / From Keywords to Conversions / My SEO Mastery Route</p>
           <p>I speak to machines, but I write for people.<br>
@@ -194,8 +227,7 @@
              And I’ve mastered the blueprint.</p>
           <p class="byline">– by Divyanshu Priyadarshi</p>
         </div>
-        <!-- Slide 6: Market Strategy Thinker -->
-        <div class="slide">
+        <div class="slide" id="market-strategy-slide">
           <h4>🧠 Market Strategy Thinker</h4>
           <p>Strategic Visioneer / Market Mind Architect / Blueprints of a Growth Strategist</p>
           <p>Markets don’t just move with trends — they move with vision.<br>
@@ -208,8 +240,7 @@
              That’s where I live.</p>
           <p class="byline">– by Divyanshu Priyadarshi</p>
         </div>
-        <!-- Slide 7: Sales Journey -->
-        <div class="slide">
+        <div class="slide" id="sales-journey-slide">
           <h4>💼 A Life Journey in Sales</h4>
           <p>Sales as a Way of Life / Conversations That Convert / From Pitch to Purpose</p>
           <p>I never sell products — I sell trust.<br>
@@ -222,8 +253,7 @@
              This isn’t just a profession. It’s personal.</p>
           <p class="byline">– by Divyanshu Priyadarshi</p>
         </div>
-        <!-- Slide 8: Cybersecurity Journey -->
-        <div class="slide">
+        <div class="slide" id="cybersecurity-journey-slide">
           <h4>🔐 A Life Journey in Cybersecurity</h4>
           <p>Guarding the Digital Frontier / Cyber Sentinel’s Path / Securing What Matters</p>
           <p>I guard what others can’t see.<br>
@@ -240,38 +270,40 @@
     </div>
     <div class="dots" id="dots"></div>
   </div>
-
   <script>
     const track = document.getElementById('track');
     let slides = Array.from(track.children);
     const dotsContainer = document.getElementById('dots');
-    // clone for infinite loop
+    // Add 1 clone at each end
     const firstClone = slides[0].cloneNode(true);
     const lastClone = slides[slides.length-1].cloneNode(true);
+    track.insertBefore(lastClone, slides[0]);
     track.appendChild(firstClone);
-    track.insertBefore(lastClone, track.firstChild);
     slides = Array.from(track.children);
+    const realCount = slides.length - 2;
     let current = 1;
-    // create dots
-    for (let i = 0; i < slides.length - 2; i++) {
-      const dot = document.createElement('div'); dot.className = 'dot'; dot.addEventListener('click', () => goTo(i+1));
+    for (let i = 0; i < realCount; i++) {
+      const dot = document.createElement('div');
+      dot.className = 'dot';
+      dot.addEventListener('click', () => goTo(i+1));
       dotsContainer.appendChild(dot);
     }
     const dots = Array.from(dotsContainer.children);
     function update(immediate=false) {
       const slideW = slides[0].getBoundingClientRect().width + 20;
-      const offset = (document.querySelector('.slider').clientWidth - slides[0].offsetWidth)/2;
-      track.style.transition = immediate?'none':'transform 0.5s ease';
-      track.style.transform = `translateX(-${current*slideW - offset}px)`;
-      dots.forEach((d,i)=>d.classList.toggle('active', i===current-1));
+      const offset = (document.querySelector('.slider').clientWidth - slideW) / 2;
+      track.style.transition = immediate ? 'none' : 'transform 0.5s cubic-bezier(.86,.01,.37,.99)';
+      track.style.transform = `translateX(-${(current) * slideW - offset}px)`;
+      dots.forEach((d, i) => d.classList.toggle('active', i === current-1));
     }
-    function goTo(idx){ current = idx; update(); }
+    function goTo(idx){
+      current = idx;
+      update();
+    }
     track.addEventListener('transitionend', ()=>{
-      const realCount = slides.length-2;
-      if(current===0){ current=realCount; update(true);} 
-      else if(current===slides.length-1){ current=1; update(true);}    
+      if (current === 0) { current = realCount; update(true); }
+      if (current === slides.length-1) { current = 1; update(true); }
     });
-    // swipe & drag
     let startX, dragging=false;
     const slider = document.querySelector('.slider');
     slider.addEventListener('touchstart', e => startX = e.touches[0].clientX);
@@ -279,6 +311,7 @@
     slider.addEventListener('mousedown', e => { dragging=true; startX = e.clientX; });
     slider.addEventListener('mouseup', e => { if(!dragging) return; dragging=false; const endX = e.clientX; if(startX-endX>50) goTo(current+1); else if(endX-startX>50) goTo(current-1); });
     slider.addEventListener('mouseleave', ()=> dragging=false);
+
     window.addEventListener('load', ()=> update(true));
   </script>
 </body>
